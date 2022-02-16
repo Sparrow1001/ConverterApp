@@ -4,13 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.view.View;
 
+import com.example.progint_1.R;
 import com.example.progint_1.databinding.ActivityMainBinding;
-import com.example.progint_1.repository.Network.MoneyLogic;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,21 +17,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        MainActivityViewModel mainActivityViewModel = new MainActivityViewModel(getApplication());
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        MoneyLogic moneyLogic = new MoneyLogic();
+        binding.spinnerGet.setSelection(117);
 
-        ImageButton imageButton = binding.imageButton;
-        EditText editText = binding.editSend;
-        TextView textView = binding.Tv1;
-
-        moneyLogic.getCoordinate("USD/RUB").observe(MainActivity.this, new Observer<Float>() {
+        binding.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(Float aFloat) {
+            public void onClick(View v) {
+
+                String query = getResources().getStringArray(R.array.names)[binding.spinnerSend.getSelectedItemPosition()]
+                        + "/" + getResources().getStringArray(R.array.names)[binding.spinnerGet.getSelectedItemPosition()];
+
+                Float value = Float.valueOf(binding.editSend.getText().toString());
+
+                mainActivityViewModel.GetCurrency(query).observe(MainActivity.this, new Observer<Float>() {
+                    @Override
+                    public void onChanged(Float aFloat) {
+                        Float answer = (aFloat * value)%100;
+                        String result = String.format("%.2f",answer);
+                        binding.editGet.setText(result);
+                    }
+                });
+
 
             }
         });
+
+
+
+
+
 
     }
 }

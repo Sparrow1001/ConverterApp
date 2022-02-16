@@ -37,7 +37,7 @@ public class MoneyLogic {
     }
 
 
-    public LiveData<Float> getCoordinate(String query){
+    public LiveData<Float> getCurrency(String query){
 
         MutableLiveData<Float> money = new MutableLiveData<>();
 
