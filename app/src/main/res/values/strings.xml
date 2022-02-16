@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ProgInt_1</string>
+
+    <string-array name="names">
+
+        <item>USD</item>
+        <item>RUB</item>
+
+    </string-array>
+</resources>
